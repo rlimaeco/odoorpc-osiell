@@ -21,6 +21,16 @@
 """This module contains all exceptions raised by `OdooRPC` when an error
 occurred.
 """
+import sys
+
+# Python 2
+if sys.version_info[0] < 3:
+    def encode2str(data):
+        return data.encode('utf-8')
+# Python >= 3
+else:
+    def encode2str(data):
+        return data
 
 
 class Error(Exception):
@@ -78,7 +88,7 @@ class RPCError(Error):
         True
     """
     def __init__(self, message, info=False):
-        super(Error, self).__init__(message, info)
+        super(Error, self).__init__(encode2str(message), info)
         self.info = info
 
     def __str__(self):
